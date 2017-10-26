@@ -1,7 +1,9 @@
 package dao;
 
+import dao.exceptions.DAOException;
 import etity.XMLData;
 import etity.XMLElement;
+import etity.XMLNode;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -25,7 +27,7 @@ public class XMLDaoImplements implements XMLDao {
     }
 
     @Override
-    public void readFile() {
+    public void readFile() throws DAOException {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(resources.getPath()));
             int readSymbol = -1;
@@ -42,17 +44,17 @@ public class XMLDaoImplements implements XMLDao {
                         expression = "";
                     }
                 }
-                System.out.println(entities.peek());
+
             } finally {
                 reader.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DAOException("DAOException!");
         }
     }
 
     private void processData(String expression) {
-        expression = expression.replaceFirst(XMLRegularExpressions.EMPTY_SPACE, "");
+        expression = expression.replaceAll(XMLRegularExpressions.EMPTY_SPACE, "");
         expressions.push(expression);
     }
 
@@ -109,7 +111,7 @@ public class XMLDaoImplements implements XMLDao {
 
     private void addElement(XMLElement xmlElement, String expression) {
         if (!expression.isEmpty()) {
-            xmlElement.addElement(new XMLData(expression));
+            xmlElement.addElement(new XMLData(depth, expression));
             entities.push(xmlElement);
         } else if (entities.isEmpty() || entities.peek().getDepth() <= depth) {
             entities.push(xmlElement);
@@ -122,7 +124,7 @@ public class XMLDaoImplements implements XMLDao {
     }
 
     @Override
-    public XMLElement valueOf() {
+    public XMLNode valueOf() {
 
         return entities.peek();
     }

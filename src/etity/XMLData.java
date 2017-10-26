@@ -2,9 +2,11 @@ package etity;
 
 public class XMLData implements XMLNode {
 
+    private int depth;
     private String xmlData;
 
-    public XMLData(String xmlData) {
+    public XMLData(int depth, String xmlData) {
+        this.depth = depth;
         this.xmlData = xmlData;
     }
 
@@ -25,6 +27,14 @@ public class XMLData implements XMLNode {
 
     @Override
     public String toString() {
-        return xmlData;
+        return getTabulation() + "-" + xmlData + "\n";
+    }
+
+    private String getTabulation() {
+        String tabulation = "";
+        for (int tabulationIndex = 1; tabulationIndex <= depth; tabulationIndex++) {
+            tabulation += "\t";
+        }
+        return tabulation;
     }
 }

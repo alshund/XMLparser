@@ -1,18 +1,18 @@
-import dao.DAOFactory;
-import dao.XMLDaoImplements;
-import service.ParserImplements;
 import service.ServiceFactory;
+import service.Parser;
+import service.exceptions.ServiceException;
 
 public class Main {
     public static void main(String[] args) {
 
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        XMLDaoImplements xmlDaoImplements = (XMLDaoImplements) daoFactory.getXmlDao();
-        xmlDaoImplements.setFileAddress("/example.xml");
-        xmlDaoImplements.readFile();
-
-//        Parser parser = new Parser();
-//
-//        parser.parseFile(Main.class.getResource("example.xml"));
+        ServiceFactory serviceFactory = ServiceFactory.getInstance();
+        Parser parser = serviceFactory.getParser();
+        parser.setFileAddress("/test.xml");
+        try {
+            parser.parseFile();
+            System.out.println(parser.valueOf());
+        } catch (ServiceException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

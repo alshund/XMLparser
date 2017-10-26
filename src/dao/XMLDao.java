@@ -1,10 +1,10 @@
 package dao;
 
-import etity.Entity;
-import etity.XMLElement;
+import dao.exceptions.DAOException;
+import etity.XMLNode;
 
 public interface XMLDao {
     void setFileAddress(String fileAddress);
-    void readFile();
-    XMLElement valueOf();
+    void readFile() throws DAOException;
+    XMLNode valueOf();
 }

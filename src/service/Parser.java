@@ -1,9 +1,10 @@
 package service;
 
-import etity.Entity;
+import etity.XMLNode;
 
-interface Parser {
-    void setFileAddress();
-    Entity valueOf();
+public interface Parser {
+    void setFileAddress(String fileAddress);
+    void parseFile() throws SecurityException;
+    XMLNode valueOf();
 
 }

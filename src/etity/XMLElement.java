@@ -36,12 +36,29 @@ public class XMLElement implements XMLNode {
 
     @Override
     public String toString() {
-        String toStringResult = this.characters + " - ";
+        String elementToString = getTabulation() + this.characters + " " + attributesToString() + ":\n";
         for (XMLNode xmlNode : elements) {
-            toStringResult += xmlNode.toString();
+            elementToString += xmlNode.toString();
         }
-        return toStringResult;
+        return elementToString;
+    }
 
+    private String getTabulation() {
+        String tabulation = "";
+        for (int tabulationIndex = 1; tabulationIndex < depth; tabulationIndex++) {
+            tabulation += "\t";
+        }
+        return tabulation;
+    }
+
+    private String attributesToString() {
+        String attributesToString = "";
+        if (!attributes.isEmpty()) {
+            for (String key : attributes.keySet()) {
+                attributesToString = key + "=" + attributes.get(key) + " ";
+            }
+        }
+        return attributesToString;
     }
 
     public int getDepth() {
