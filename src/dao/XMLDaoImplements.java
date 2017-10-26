@@ -1,6 +1,7 @@
 package dao;
 
-import etity.Entity;
+import etity.XMLData;
+import etity.XMLElement;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +17,7 @@ public class XMLDaoImplements implements XMLDao {
 
     private int depth = 0;
     private Stack<String> expressions = new Stack<>();
-    private Stack<Entity> entities = new Stack<>();
+    private Stack<XMLElement> entities = new Stack<>();
 
     @Override
     public void setFileAddress(String fileAddress) {
@@ -41,7 +42,7 @@ public class XMLDaoImplements implements XMLDao {
                         expression = "";
                     }
                 }
-
+                System.out.println(entities.peek());
             } finally {
                 reader.close();
             }
@@ -51,7 +52,7 @@ public class XMLDaoImplements implements XMLDao {
     }
 
     private void processData(String expression) {
-        expression = expression.replaceAll(XMLRegularExpressions.EMPTY_SPACE, "");
+        expression = expression.replaceFirst(XMLRegularExpressions.EMPTY_SPACE, "");
         expressions.push(expression);
     }
 
@@ -65,8 +66,8 @@ public class XMLDaoImplements implements XMLDao {
 
     private void processClosingTag(String expression) {
         if (expression.matches(XMLRegularExpressions.CLOSING_TAG)) {
-            String XMLElement = popXMLElement(expression);
-            System.out.println(XMLElement);
+            String XMLElement = popXMLElement() + expression;
+            processingXMLElement(XMLElement);
         }
     }
 
@@ -75,20 +76,53 @@ public class XMLDaoImplements implements XMLDao {
             expressions.push(expression);
             depth++;
         }
-//        TODO throwException
     }
 
-    private String popXMLElement(String expression) {
+    private String popXMLElement() {
         String XMLData = "";
         while (!expressions.isEmpty() && !expressions.peek().matches(XMLRegularExpressions.OPENING_TAG)) {
             XMLData += expressions.pop();
         }
-        return expressions.pop() + XMLData + expression;
+        return expressions.pop() + XMLData;
     }
 
+    private void processingXMLElement(String expression) {
+        Matcher matcher = getMatcher(XMLRegularExpressions.XML_ELEMENT, expression);
+        if (matcher.find()) {
+            XMLElement xmlElement = new XMLElement();
+            xmlElement.setDepth(this.depth);
+            xmlElement.setCharacters(matcher.group(XMLRegularExpressions.TAG_GROUP_NAME));
+            this.addAttributes(xmlElement, matcher.group(XMLRegularExpressions.ATTRS_GROUP_NAME));
+            addElement(xmlElement, matcher.group(XMLRegularExpressions.DATA));
+            depth--;
+        }
+    }
+
+    private void addAttributes(XMLElement xmlElement, String expressions) {
+        Matcher matcher = getMatcher(XMLRegularExpressions.ATTR, expressions);
+        while (matcher.find()) {
+            String key = matcher.group(XMLRegularExpressions.ATTR_NAME);
+            String value = matcher.group(XMLRegularExpressions.ATTR_VALUE);
+            xmlElement.putAttribute(key, value);
+        }
+    }
+
+    private void addElement(XMLElement xmlElement, String expression) {
+        if (!expression.isEmpty()) {
+            xmlElement.addElement(new XMLData(expression));
+            entities.push(xmlElement);
+        } else if (entities.isEmpty() || entities.peek().getDepth() <= depth) {
+            entities.push(xmlElement);
+        } else {
+            while(!entities.isEmpty() && entities.peek().getDepth() != depth) {
+                xmlElement.addElement(entities.pop());
+            }
+            entities.push(xmlElement);
+        }
+    }
 
     @Override
-    public Entity valueOf() {
+    public XMLElement valueOf() {
 
         return entities.peek();
     }
