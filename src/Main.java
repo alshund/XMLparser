@@ -1,8 +1,18 @@
+import dao.DAOFactory;
+import dao.XMLDaoImplements;
+import service.ParserImplements;
+import service.ServiceFactory;
+
 public class Main {
     public static void main(String[] args) {
 
-        Parser parser = new Parser();
+        DAOFactory daoFactory = DAOFactory.getInstance();
+        XMLDaoImplements xmlDaoImplements = (XMLDaoImplements) daoFactory.getXmlDao();
+        xmlDaoImplements.setFileAddress("/example.xml");
+        xmlDaoImplements.readFile();
 
-        parser.parseFile(Main.class.getResource("example"));
+//        Parser parser = new Parser();
+//
+//        parser.parseFile(Main.class.getResource("example.xml"));
     }
 }
