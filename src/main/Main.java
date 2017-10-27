@@ -9,7 +9,7 @@ public class Main {
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         EntityService parser = serviceFactory.getParser();
-        parser.setFileAddress("/test.xml");
+        parser.setFileAddress("test.xml");
         try {
             parser.parseFile();
             PrintXML.printTree(parser.valueOf());

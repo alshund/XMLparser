@@ -31,7 +31,7 @@ public class XMLDaoImpl implements XMLDao {
     @Override
     public void setFileAddress(String fileAddress) {
 
-        resources = XMLDaoImpl.class.getResource(fileAddress);
+        resources = this.getClass().getClassLoader().getResource(fileAddress);
     }
 
     @Override
