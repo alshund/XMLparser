@@ -1,7 +1,7 @@
 package dao;
 
 import dao.exceptions.DAOException;
-import etity.XMLNode;
+import entity.XMLNode;
 
 public interface XMLDao {
     void setFileAddress(String fileAddress);

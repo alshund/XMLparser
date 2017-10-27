@@ -1,4 +1,4 @@
-package etity;
+package entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,19 +36,8 @@ public class XMLElement implements XMLNode {
 
     @Override
     public String toString() {
-        String elementToString = getTabulation() + this.characters + " " + attributesToString() + ":\n";
-        for (XMLNode xmlNode : elements) {
-            elementToString += xmlNode.toString();
-        }
+        String elementToString = this.characters + " " + attributesToString() + ":";
         return elementToString;
-    }
-
-    private String getTabulation() {
-        String tabulation = "";
-        for (int tabulationIndex = 1; tabulationIndex < depth; tabulationIndex++) {
-            tabulation += "\t";
-        }
-        return tabulation;
     }
 
     private String attributesToString() {
@@ -61,6 +50,7 @@ public class XMLElement implements XMLNode {
         return attributesToString;
     }
 
+    @Override
     public int getDepth() {
         return depth;
     }
@@ -79,6 +69,11 @@ public class XMLElement implements XMLNode {
 
     public void putAttribute(String key, String value) {
         attributes.put(key, value);
+    }
+
+    @Override
+    public List<XMLNode> getElements() {
+        return elements;
     }
 
     public void addElement(XMLNode xmlNode) {

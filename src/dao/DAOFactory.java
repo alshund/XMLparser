@@ -3,7 +3,7 @@ package dao;
 public class DAOFactory {
 
     private static final DAOFactory instance = new DAOFactory();
-    private final XMLDao xmlDao = new XMLDaoImplements();
+    private final XMLDao xmlDao = new XMLDaoImpl();
 
     private DAOFactory() {}
 

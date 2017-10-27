@@ -1,16 +1,18 @@
+package main;
+
 import service.ServiceFactory;
-import service.Parser;
+import service.EntityService;
 import service.exceptions.ServiceException;
 
 public class Main {
     public static void main(String[] args) {
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        Parser parser = serviceFactory.getParser();
+        EntityService parser = serviceFactory.getParser();
         parser.setFileAddress("/test.xml");
         try {
             parser.parseFile();
-            System.out.println(parser.valueOf());
+            PrintXML.printTree(parser.valueOf());
         } catch (ServiceException e) {
             System.out.println(e.getMessage());
         }

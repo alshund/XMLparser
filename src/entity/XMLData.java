@@ -1,4 +1,6 @@
-package etity;
+package entity;
+
+import java.util.List;
 
 public class XMLData implements XMLNode {
 
@@ -8,6 +10,16 @@ public class XMLData implements XMLNode {
     public XMLData(int depth, String xmlData) {
         this.depth = depth;
         this.xmlData = xmlData;
+    }
+
+    @Override
+    public int getDepth() {
+        return depth;
+    }
+
+    @Override
+    public List<XMLNode> getElements() {
+        return null;
     }
 
     @Override
@@ -27,14 +39,6 @@ public class XMLData implements XMLNode {
 
     @Override
     public String toString() {
-        return getTabulation() + "-" + xmlData + "\n";
-    }
-
-    private String getTabulation() {
-        String tabulation = "";
-        for (int tabulationIndex = 1; tabulationIndex <= depth; tabulationIndex++) {
-            tabulation += "\t";
-        }
-        return tabulation;
+        return "\t-" + xmlData;
     }
 }

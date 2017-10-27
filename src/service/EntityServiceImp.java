@@ -3,13 +3,14 @@ package service;
 import dao.DAOFactory;
 import dao.XMLDao;
 import dao.exceptions.DAOException;
-import etity.XMLNode;
+import entity.XMLNode;
+import service.exceptions.ServiceException;
 
-public class ParserImplements implements Parser {
+public class EntityServiceImp implements EntityService {
 
     private XMLDao xmlDao;
 
-    public ParserImplements() {
+    public EntityServiceImp() {
         DAOFactory daoFactory = DAOFactory.getInstance();
         xmlDao = daoFactory.getXmlDao();
     }
@@ -20,14 +21,13 @@ public class ParserImplements implements Parser {
     }
 
     @Override
-    public void parseFile() throws SecurityException {
+    public void parseFile() throws ServiceException {
         try {
             xmlDao.readFile();
         } catch (DAOException e) {
-            throw new SecurityException("ServiceException");
+            throw new ServiceException("Parse error!");
         }
     }
-
 
     @Override
     public XMLNode valueOf() {
