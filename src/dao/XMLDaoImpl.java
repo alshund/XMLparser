@@ -87,7 +87,8 @@ public class XMLDaoImpl implements XMLDao {
         }
         else if (expression.matches(XMLRegularExpressions.OPENING_TAG)) {
             this.processOpeningTag(expression);
-        } else {
+        }
+        else if (!expression.matches(XMLRegularExpressions.PREAMBLE)) {
             throw new DAOException(NO_SUCH_ELEMENT);
         }
     }
