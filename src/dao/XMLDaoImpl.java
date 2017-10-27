@@ -26,7 +26,7 @@ public class XMLDaoImpl implements XMLDao {
 
     private int depth = 0;
     private Stack<String> expressions = new Stack<>();
-    private Stack<XMLElement> entities = new Stack<>();
+    private Stack<XMLNode> entities = new Stack<>();
 
     @Override
     public void setFileAddress(String fileAddress) {
